@@ -15,34 +15,30 @@ public class SuperLanaPageTest {
 
     @BeforeAll
     public static void setUpAll() {
-        Configuration.browserSize = "1280x800";
+        Configuration.browserSize = "1920x1080";
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
     @BeforeEach
-    public void setUp() {
-        open(superLamaPage.URL);
+    public void setUp() throws InterruptedException {
+        superLamaPage.openPage();
     }
 
     @Test
-    public void WhenMinAndMaxPriceIs0_NoItemsShouldBeDisplayedInProductGrid() {
-        superLamaPage.accessoriesReference.click();
-        superLamaPage.minPriceInput.setValue("0");
-        superLamaPage.maxPriceInput.setValue("0");
-        superLamaPage.minPriceInput.pressTab();
-        Assert.isTrue(!superLamaPage.productGrid.find("div").isDisplayed(), "Product grid is not empty");
+    public void WhenMinAndMaxPriceIs0_NoItemsShouldBeDisplayedInProductGrid() throws InterruptedException {
+        superLamaPage.clickOnElement(superLamaPage.accessoriesLink);
+        superLamaPage.setPriceInputsTo0Values();
+        Assert.isTrue(superLamaPage.productGrid.findAll("div").size()==0, "Product grid is not empty");
     }
 
     @Test
     public void WhenPressLamaboxesButton_HeaderShouldHaveTextLamaboxes() {
-        superLamaPage.LamaboxesLink.click();
+        superLamaPage.clickOnElement(superLamaPage.LamaboxesLink);
         Assert.isTrue(superLamaPage.header.getText().equals("Ламабоксы"), "Header text is not equal to 'Ламабоксы'");
     }
 
     @Test void WhenGoToJojoFranciseLink_HeaderShoudHaveTextJojonoKimyounaBouken(){
-        superLamaPage.SearchByFranchise.click();
-        superLamaPage.SearchByFranchise.hover();
-        superLamaPage.GogoLink.click();
+        superLamaPage.goToGogoSection();
         Assert.isTrue(superLamaPage.header.getText().equals("Jojo no Kimyou na Bouken"), "Header text is not equal to 'Jojo no Kimyou na Bouken'");
 
     }
